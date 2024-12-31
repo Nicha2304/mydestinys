@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hamster Love</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #ffc0cb; /* พื้นหลังสีชมพู */
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    #hamster-container {
+      text-align: center;
+      position: relative;
+    }
+    #hamster {
+      width: 200px;
+      cursor: pointer;
+      position: relative;
+      z-index: 10;
+    }
+    #hint-text {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #ff69b4;
+      font-weight: bold;
+    }
+    .popup {
+      position: absolute;
+      top: -50px;
+      right: -150px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.5s ease;
+      z-index: 20;
+    }
+    .popup img {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+    .popup p {
+      font-size: 16px;
+      color: #ff69b4;
+      margin: 0;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .emoji {
+      position: absolute;
+      font-size: 24px;
+      animation: floatUp 2s linear infinite;
+      z-index: 5;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="hamster-container">
+    <img id="hamster" src="images/hamster_image.png" alt="Hamster" title="Click me!">
+    <div id="hint-text">Click on the hamster and see! ❤️</div>
+    <div class="popup" id="popup">
+      <img src="images/love_image.png" alt="Love">
+      <p>I miss u, I miss u sooo much Charles</p>
+    </div>
+  </div>
+
+  <script>
+    const hamster = document.getElementById('hamster');
+    const popup = document.getElementById('popup');
+    const audio = new Audio('images/voice_message.mp3'); // ใส่ไฟล์เสียงในโฟลเดอร์ images
+
+    hamster.addEventListener('click', () => {
+      // เล่นเสียง
+      audio.currentTime = 0; // เริ่มต้นที่ 0 วินาทีทุกครั้ง
+      audio.play();
+
+      // หยุดเสียงหลังจาก 0.04 วินาที
+      setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0;
+      }, 40); // 40 มิลลิวินาที = 0.04 วินาที
+
+      // แสดงกรอบความคิด (popup)
+      popup.style.display = 'block';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 4000); // แสดง popup นาน 4 วินาที (4000 มิลลิวินาที)
+
+      // เพิ่มอีโมจิหัวใจเด้ง
+      for (let i = 0; i < 50; i++) { // จำนวนหัวใจที่กระจาย
+        createEmoji();
+      }
+    });
+
+    function createEmoji() {
+      const emoji = document.createElement('div');
+      emoji.classList.add('emoji');
+      emoji.textContent = '❤️'; // อีโมจิหัวใจสีแดง
+      document.body.appendChild(emoji);
+
+      // กำหนดตำแหน่งแบบสุ่ม
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      emoji.style.left = `${x}px`;
+      emoji.style.top = `${y}px`;
+
+      // ลบหัวใจหลังจากจบแอนิเมชัน
+      setTimeout(() => {
+        emoji.remove();
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
+
